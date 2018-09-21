@@ -1,8 +1,8 @@
 <template>
   <!-- <v-container> -->
   <v-container v-bind="{ [`grid-list-sm`]: true }">
-    <v-layout row wrap>
-      <v-flex  xs12 sm6 md3 lg3 xl2 v-for="n in 8" :key="n">          <!-- xs12 sm6 md6  lg3 xl2 -->
+    <!-- <v-layout row wrap>
+      <v-flex v-bind="{ [`xs${size}`]: true }"  v-for="n in 8" :key="n">
         <portlet
          :size="size"
          :height="height"
@@ -12,6 +12,31 @@
           :series="series"
           :chartConfig="config" />
       </v-flex>
+      </v-layout> -->
+      <v-layout row >
+        <v-flex xs8>
+          <portlet
+           :size="size"
+           :height="height"
+            type='barChart'
+            :showActionbar="showActionbar"
+            :showToolbar="showToolbar"
+            :series="series"
+            :chartConfig="config" />
+        </v-flex>
+
+        <v-layout column >
+          <v-flex xs2 v-for="n in 4" :key="n">
+            <portlet
+             :size="size"
+             :height="0.95*height/4"
+              type='barChart'
+              :showActionbar="showActionbar"
+              :showToolbar="showToolbar"
+              :series="seriessmall[n]"
+              :chartConfig="configsmall" />
+          </v-flex>
+          </v-layout>
       </v-layout>
   </v-container>
 </template>
@@ -37,6 +62,33 @@ export default {
   },
 
   computed: {
+    configsmall: function () {
+      return {
+        ...this.config,
+        margin: {
+          top: 5,
+          right: 5,
+          bottom: 50,
+          left: 5,
+        },
+        primaryValuesAxis: {
+          labels: false,
+          line: false
+        },
+        secondaryValuesAxis: {
+          labels: false,
+          line: false
+        },
+        categoriesAxis: {
+          labels: false
+        },
+        showVersion: false
+      }
+    },
+    seriessmall: function () {
+      return [[this.series1], [this.series2], [this.series3], [this.series4], [this.series5]]
+    },
+
     size: function () {
       return 12/this.nColumns
     },

@@ -404,9 +404,9 @@ export var Layout = function(data /*: Array<Object> */, canvas /*: Object */, of
     .domain(Layout.toPixlx.domain())
     .range([0, Layout.toPixlx.range()[1] - Layout.toPixlx.range()[0]])
 
-    Layout.toCanvasy = d3.scaleLinear() // without offset (i.e. just slope of mapping function)
-      .domain(Layout.toPixly.domain())
-      .range([0, Layout.toPixly.range()[1] - Layout.toPixly.range()[0]])
+  Layout.toCanvasy = d3.scaleLinear() // without offset (i.e. just slope of mapping function)
+    .domain(Layout.toPixly.domain())
+    .range([0, Layout.toPixly.range()[1] - Layout.toPixly.range()[0]])
 
   console.log('Layout size', Layout.size)
 

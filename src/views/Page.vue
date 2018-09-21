@@ -1,13 +1,28 @@
 <template>
-  <div>
-    <v-layout row class='mt-5'>
-      <v-flex xs10 offset-xs1>
-        <div id="canvas" ref="canvas" :style="'width:' + cwidth + 'px; height:' + cheight + 'px;'">
-        </div>
+  <v-container style="margin-top: 60px">
+    <v-layout fill-height justify-center>
+      <v-flex id="canvas" ref="canvas" xs11 >
+        <!-- <div id="canvas" ref="canvas"> -->
+           <!-- :style="'width:' + cwidth + 'px; height:' + cheight + 'px;'"> -->
+        <!-- </div> -->
       </v-flex>
       <v-flex xs1>
         <!-- <div id="tools" class="tools"> -->
-        <v-btn @click="addPortlet">Add Portlet</v-btn>
+        <v-btn @click.stop="addPortlet"
+          light
+          fab
+          color="grey-lighten"
+        >
+          <v-icon large style="height:auto;">add</v-icon>
+        </v-btn>
+
+        <v-btn @click.stop="toggleAction"
+           light
+           fab
+           color="grey-lighten"
+         >
+           <v-icon large style="height:auto;">edit</v-icon>
+         </v-btn>
           <!-- <span class="tool"><input id="isexpert" type=checkbox onchange=toggleExpert() checked> Expert</span> -->
           <!-- <div id="expert"> -->
             <!-- <button class="tool" @click="addPortlet">New Portlet</button> -->
@@ -18,7 +33,7 @@
         <!-- </div> -->
       </v-flex>
     </v-layout>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -44,6 +59,7 @@
       layout: null,
       test: false,
       drawCharts: true,
+      actionMode: false,
       seriescollection: [
       {
         // type: 'default' // intentionally left out
@@ -179,6 +195,14 @@
       //   //layout.delegate("initial", newPortlet);
       //   this.layout.updateLayout();
       // },
+      //
+      toggleAction: function () {
+        this.actionMode = !this.actionMode
+        for (let portlet of this.portlets) {
+          portlet.content.actionMode = this.actionMode
+          this.drawPortlet(portlet.content)
+        }
+      },
 
       drawPortlet: function (content, mode) {
         // if (tile.empty()) {
@@ -223,6 +247,7 @@
           // plet.content.pnode.type = plet.content.type
           plet.content.pnode.config = { orientation: plet.content.orientation }
           plet.content.pnode.series = plet.content.series
+          plet.content.pnode.actionMode = plet.content.actionMode
           // pvm.minHeight = 50
           // pvm.$mount('#' + content.id)
           // console.log('get element id', content.id, document.getElementById(content.id))
@@ -281,6 +306,7 @@
           let portlet = {
             content: {
               // type: ctype[this.portlets.length % 3],
+              actionMode: this.actionMode,
               orientation: orient[this.portlets.length % 2],
               series: this.getSeries(),
               id: pid,
@@ -306,6 +332,11 @@
 
 
 <style type="text/css">
+/*
+.container {
+  margin-top: 60px;
+} */
+
 /*
 #tools {
   width: 100px;
@@ -367,7 +398,7 @@ img.tool {
   background: white;
   border-color: blue;
   border-style: solid;
-  border-width: 1px;
+  border-width: 0px;
 }
 /*
 .header {
@@ -381,7 +412,7 @@ img.tool {
  .content {
   border-color: red;
   border-style: solid;
-  border-width: 1px;
+  border-width: 0px;
   margin-top: 0px;
   margin-bottom: 0px;
   margin-left: 0px;
