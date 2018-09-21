@@ -45,7 +45,7 @@
 </template>
 
 <script>
-  import roiCharts from '@/components/roi-charts'
+  import roiCharts from 'roi-charts'
   export default {
     props: {
       showToolbar: {
